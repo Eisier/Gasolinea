@@ -1,8 +1,28 @@
 DROP TABLE Productos;
 
 DROP TABLE ItemCompras;
+DROP TABLE Embarcaderos;
+DROP TABLE Clientes;
 
+CREATE TABLE Clientes(
+Id_C NUMBER NOT NULL,
+Nombre VARCHAR2(50) NOT NULL,
+Apellidos VARCHAR2(50) NOT NULL,
+Dni CHAR(9) NOT NULL UNIQUE,
+Telefono CHAR(9) NOT NULL UNIQUE,
+Correo VARCHAR2(60) NOT NULL UNIQUE,
+FechaNacimiento DATE NOT NULL,
+Contraseña VARCHAR2(50) NOT NULL,
+DireccionImagen VARCHAR2(60) NOT NULL UNIQUE,
+PRIMARY KEY(Id_C),
+Constraint ck_dni_cliente CHECK(REGEXP_LIKE(dni, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][A-Z]')),
+Constraint ck_telefono_cliente CHECK(REGEXP_LIKE(telefono, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')));
 
+CREATE TABLE Embarcaderos(
+Id_E NUMBER NOT NULL,
+Disponible CHAR(2) NOT NULL,
+constraint LIBRE check (Disponible IN('SI','NO')),
+PRIMARY KEY(Id_E));
 
 CREATE TABLE Productos(
 Id_P NUMBER NOT NULL,
