@@ -1,5 +1,7 @@
 DROP TABLE Embarcaderos;
 DROP TABLE Clientes;
+DROP TABLE Almacenes;
+DROP TABLE Combustibles;
 DROP TABLE ItemCompras;
 DROP TABLE Productos;
 DROP TABLE LineaCompras;
@@ -31,6 +33,21 @@ Id_I NUMBER NOT NULL,
 Stock NUMBER(9,2) NOT NULL,
 Precio NUMBER(9,2) NOT NULL,
 PRIMARY KEY(Id_I));
+
+CREATE TABLE Combustibles(
+Id_COMB NUMBER NOT NULL,
+TipoCombustible VARCHAR2(10) NOT NULL,
+Id_I NUMBER NOT NULL,
+constraint enumerado2 check (TipoCombustible IN ('GASOLINA','GASOIL')),
+PRIMARY KEY(Id_COMB),
+FOREIGN KEY(Id_I) REFERENCES ItemCompras(Id_I) ON DELETE CASCADE);
+
+CREATE TABLE Almacenes(
+Id_A NUMBER NOT NULL,
+Direccion VARCHAR2(50) NOT NULL,
+Ciudad VARCHAR2(50) NOT NULL,
+Provincia VARCHAR2(50) NOT NULL,
+PRIMARY KEY(Id_A));
 
 CREATE TABLE Productos(
 Id_P NUMBER NOT NULL,
