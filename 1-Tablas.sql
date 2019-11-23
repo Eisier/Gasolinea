@@ -5,7 +5,6 @@ DROP TABLE Productos;
 DROP TABLE LineaCompras;
 DROP TABLE Compras;
 
-
 CREATE TABLE Clientes(
 Id_C NUMBER NOT NULL,
 Nombre VARCHAR2(50) NOT NULL,
@@ -19,6 +18,21 @@ DireccionImagen VARCHAR2(60) NOT NULL UNIQUE,
 PRIMARY KEY(Id_C),
 Constraint ck_dni_cliente CHECK(REGEXP_LIKE(dni, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][A-Z]')),
 Constraint ck_telefono_cliente CHECK(REGEXP_LIKE(telefono, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')));
+
+CREATE TABLE Trabajadores(
+Id_T NUMBER NOT NULL,
+Nombre VARCHAR2(50) NOT NULL,
+Apellidos VARCHAR2(50) NOT NULL,
+Dni CHAR(9) NOT NULL UNIQUE,
+Telefono CHAR(9) NOT NULL UNIQUE,
+Salario NUMBER(9,2) NOT NULL,
+TipoEmpleado VARCHAR2(15) NOT NULL,
+Contraseña VARCHAR2(50) NOT NULL,
+DireccionImagen VARCHAR2(60) NOT NULL UNIQUE,
+constraint enumerado1 check (TipoEmpleado IN ('JEFE','DEPENDIENTE')),
+PRIMARY KEY(Id_T),
+Constraint ck_dni_trabajador CHECK(REGEXP_LIKE(dni, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][A-Z]')),
+Constraint ck_telefono_trabajador CHECK(REGEXP_LIKE(telefono, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')));
 
 CREATE TABLE Embarcaderos(
 Id_E NUMBER NOT NULL,
