@@ -4,6 +4,7 @@ DROP TABLE Embarcaderos;
 DROP TABLE Combustibles;
 DROP TABLE Almacenes;
 DROP TABLE ItemCompras;
+DROP TABLE Proveedores;
 DROP TABLE Productos;
 DROP TABLE LineaCompras;
 DROP TABLE Compras;
@@ -64,6 +65,17 @@ Direccion VARCHAR2(50) NOT NULL,
 Ciudad VARCHAR2(50) NOT NULL,
 Provincia VARCHAR2(50) NOT NULL,
 PRIMARY KEY(Id_A));
+
+CREATE TABLE Proveedores(
+Id_PRO NUMBER NOT NULL,
+Nombre VARCHAR2(50) NOT NULL,
+Apellidos VARCHAR2(50) NOT NULL,
+Dni CHAR(9) NOT NULL UNIQUE,
+Telefono CHAR(9) NOT NULL UNIQUE,
+Correo VARCHAR2(50) NOT NULL UNIQUE,
+PRIMARY KEY(Id_PRO),
+Constraint ck_dni_proveedor CHECK(REGEXP_LIKE(dni, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][A-Z]')),
+Constraint ck_telefono_proveedor CHECK(REGEXP_LIKE(telefono, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')));
 
 CREATE TABLE Productos(
 Id_P NUMBER NOT NULL,
