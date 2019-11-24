@@ -1,8 +1,8 @@
-DROP TABLE Embarcaderos;
-DROP TABLE Trabajadores;	
 DROP TABLE Clientes;
-DROP TABLE Almacenes;
+DROP TABLE Trabajadores;
+DROP TABLE Embarcaderos;
 DROP TABLE Combustibles;
+DROP TABLE Almacenes;
 DROP TABLE ItemCompras;
 DROP TABLE Productos;
 DROP TABLE LineaCompras;
