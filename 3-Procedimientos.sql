@@ -71,6 +71,44 @@ OPEN C;
 		CLOSE C;
 	END consultar_trabajadores;
 
+--Proveedores
+CREATE OR REPLACE PROCEDURE insertar_proveedores
+(w_nombre in proveedores.nombre%TYPE,
+w_apellidos in proveedores.apellidos%TYPE,
+w_dni in proveedores.dni%TYPE,
+w_telefono in proveedores.telefono%TYPE,
+w_correo in proveedores.correo%TYPE) IS
+BEGIN
+  INSERT INTO Proveedores (id_pro, nombre, apellidos, dni, telefono, correo)
+  VALUES (sec_proveedor.NEXTVAL, w_nombre, w_apellidos, w_dni, w_telefono, w_correo);
+END;
+/
+CREATE OR REPLACE PROCEDURE eliminar_proveedores
+(w_id_pro in proveedores.id_pro%TYPE) is
+BEGIN 
+  DELETE FROM Proveedores WHERE w_id_pro = id_pro;
+END;
+/
+CREATE OR REPLACE PROCEDURE modificar_proveedores
+(w_id_pro in proveedores.id_pro%TYPE,
+w_nombre in proveedores.nombre%TYPE, 
+w_apellidos in proveedores.apellidos%TYPE,
+w_dni in proveedores.dni%TYPE,
+w_telefono in proveedores.telefono%TYPE,
+w_correo in proveedores.correo%TYPE)IS
+BEGIN
+  UPDATE Proveedores SET nombre = w_nombre, apellidos = w_apellidos, dni = w_dni,
+  telefono = w_telefono, correo = w_correo
+  WHERE w_id_pro = id_pro;
+END;
+/
+CREATE OR REPLACE PROCEDURE inicializar_proveedores
+IS
+BEGIN 
+  DELETE FROM Proveedores;
+END;
+/
+
 --LineaCompras
 CREATE OR REPLACE PROCEDURE insertar_lineaCompras
 (w_cantidad IN lineaCompras.cantidad%TYPE,
