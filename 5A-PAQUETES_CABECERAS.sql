@@ -37,6 +37,34 @@ CREATE OR REPLACE PACKAGE pruebas_trabajadores AS
  END pruebas_trabajadores;
 /
 
+--Proveedores
+CREATE OR REPLACE 
+PACKAGE pruebas_proveedores AS
+  PROCEDURE inicializar;
+  PROCEDURE insertar
+    (nombre_prueba VARCHAR2,
+    w_nombre in proveedores.nombre%TYPE,
+    w_apellidos in proveedores.apellidos%TYPE,
+    w_dni in proveedores.dni%TYPE,
+    w_telefono in proveedores.telefono%TYPE,
+    w_correo in proveedores.correo%TYPE,
+    salidaEsperada BOOLEAN);
+  PROCEDURE actualizar
+    (nombre_prueba VARCHAR2,
+    w_id_pro in proveedores.id_pro%TYPE,
+    w_nombre in proveedores.nombre%TYPE,
+    w_apellidos in proveedores.apellidos%TYPE,
+    w_dni in proveedores.dni%TYPE,
+    w_telefono in proveedores.telefono%TYPE,
+    w_correo in proveedores.correo%TYPE,
+    salidaEsperada BOOLEAN);
+  PROCEDURE eliminar
+  (nombre_prueba VARCHAR2,
+  w_id_pro in proveedores.id_pro%TYPE,
+  salidaEsperada BOOLEAN);
+END;
+/
+
 --LineaCompras
 CREATE OR REPLACE PACKAGE Pruebas_LineaCompras IS
 
