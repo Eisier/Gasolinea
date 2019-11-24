@@ -140,3 +140,173 @@ WHEN OTHERS THEN
 END eliminar;
 
 END pruebas_trabajadores;
+/
+
+--LineaCompras
+CREATE OR REPLACE PACKAGE BODY Pruebas_lineaCompras IS
+
+  PROCEDURE inicializar IS
+    BEGIN 
+      /*borrar contenido de la tabla*/
+      DELETE FROM lineaCompras;
+  END inicializar;  
+  
+  PROCEDURE insertar(nombre_prueba VARCHAR2,  w_cantidad IN lineaCompras.cantidad%TYPE, w_Id_I IN lineaCompras.Id_I%TYPE, salida_esperada BOOLEAN) IS
+    salida BOOLEAN := true;
+    lineaCompra lineaCompras%ROWTYPE;
+    w_Id_L NUMBER;
+    BEGIN
+      /*Insertar lineaCompra*/
+      INSERT INTO lineaCompras VALUES(sec_lineaCompra.nextval,w_cantidad, w_Id_I);
+      
+      /*Seleccionar lineaCompra y comprobar que los datos se insertaron correctamente*/
+      w_Id_L := sec_lineaCompra.currval;
+      SELECT * INTO lineaCompra FROM lineaCompras WHERE Id_L = w_Id_L;
+      IF(lineaCompra.cantidad<>w_cantidad OR lineaCompra.Id_I<>w_Id_I)THEN
+        salida := false;
+      END IF;  
+      COMMIT WORK;
+      
+      /*Mostrar resultado de la prueba*/
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida, salida_esperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salida_Esperada));
+        ROLLBACK;
+  END insertar;  
+  
+  PROCEDURE actualizar(nombre_prueba VARCHAR2, w_Id_L IN lineaCompras.Id_L%TYPE, w_cantidad IN lineaCompras.cantidad%TYPE, w_Id_I IN lineaCompras.Id_I%TYPE, salida_esperada BOOLEAN) IS
+    salida BOOLEAN := true;
+    lineaCompra lineaCompras%ROWTYPE;
+    BEGIN
+      
+      /*Actualizar lineaCompra*/
+      UPDATE lineaCompras SET Cantidad = w_cantidad, Id_I =w_Id_I WHERE  Id_L = w_Id_L;
+      
+      /*Seleccionar lineaCompra y comprobar que los campos se actualizaron correctamente*/
+      SELECT * INTO lineaCompra FROM lineaCompras WHERE Id_L = w_Id_L;
+      IF(lineaCompra.cantidad<>w_cantidad OR lineaCompra.Id_I<>w_Id_I)THEN
+        salida := false;
+      END IF;  
+      COMMIT WORK;
+      
+      /*Mostrar resultado de la prueba*/
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida, salida_esperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salida_Esperada));
+        ROLLBACK;
+  END actualizar;
+  
+  PROCEDURE eliminar(nombre_prueba VARCHAR2, w_Id_L IN lineaCompras.Id_L%TYPE, salida_Esperada BOOLEAN) IS
+    salida BOOLEAN := true;
+    n_lineaCompras INTEGER;
+    BEGIN
+    
+      /*Eliminar lineaCompra*/
+      DELETE FROM lineaCompras WHERE Id_L = w_Id_L;
+      
+      /*Verificar que la lineaCompra no se encuentra en la BD*/
+      SELECT COUNT(*) INTO n_lineaCompras FROM lineaCompras WHERE Id_L = w_Id_L;
+      IF(n_lineaCompras <> 0) THEN
+        salida := false;
+      END IF;
+      COMMIT WORK;
+      
+      /*Mostrar resultado de la prueba*/
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida, salida_Esperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida, salida_Esperada));
+        ROLLBACK;
+  END eliminar;
+  
+END Pruebas_lineaCompras;
+/
+
+--Compras
+CREATE OR REPLACE PACKAGE BODY Pruebas_Compras IS
+  
+  PROCEDURE inicializar
+  IS BEGIN
+    DELETE FROM compras;
+  END inicializar;
+ 
+  PROCEDURE insertar(nombre_prueba VARCHAR2,w_fechaPedido IN COMPRAS.FECHAPEDIDO%TYPE, w_fechaRecogida IN compras.fechaRecogida%TYPE, w_Pagado IN compras.pagado%TYPE, w_Id_C IN compras.Id_C%TYPE, w_Id_T IN compras.Id_T%TYPE, w_Id_L IN compras.Id_L%TYPE, salida_Esperada BOOLEAN) IS
+    salida BOOLEAN := true;
+    compra compras%ROWTYPE;
+    w_Id_COM NUMBER;
+    BEGIN
+    
+      /*Insertar compra*/
+       INSERT INTO Compras VALUES (sec_compra.nextval,w_fechaPedido,w_fechaRecogida,W_Pagado,w_Id_C,w_Id_T,w_Id_L);
+ 
+      /*Seleccionar compra y comprobar que los datos se insertaron correctamente*/
+      w_Id_COM := sec_compra.currval;
+      SELECT * INTO compra FROM compras WHERE Id_COM = w_Id_COM;
+      IF(compra.fechaPedido<>w_fechaRecogida OR compra.fechaRecogida<>w_fechaRecogida OR compra.pagado<>w_pagado OR compra.Id_C<>w_Id_C OR compra.Id_T<>w_Id_T OR compra.Id_L<>w_Id_L)THEN
+        salida := true;
+      END IF;  
+      COMMIT WORK;
+  
+      /*Mostrar resultado de la prueba*/
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida,salida_Esperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salida_Esperada));
+        ROLLBACK;
+  END insertar;
+  
+  PROCEDURE actualizar(nombre_prueba VARCHAR2,w_Id_COM IN Compras.Id_COM%TYPE, w_fechaPedido IN COMPRAS.FECHAPEDIDO%TYPE, w_fechaRecogida IN compras.fechaRecogida%TYPE, w_Pagado IN compras.pagado%TYPE,w_Id_C IN compras.Id_C%TYPE, w_Id_T IN compras.Id_T%TYPE, w_Id_L IN compras.Id_L%TYPE, salida_Esperada BOOLEAN) IS
+    salida BOOLEAN := true;
+    compra compras%ROWTYPE;
+    BEGIN
+      /*Actualizar compra*/
+      UPDATE Compras SET fechaPedido = w_fechaPedido, fechaRecogida = w_fechaRecogida, Pagado =w_pagado ,Id_C = w_Id_C, Id_T = w_Id_T, Id_L = w_Id_L WHERE Id_COM = w_Id_COM;
+      
+      /*Seleccionar compra y comprobar que los campos se actualizan correctamente*/
+      SELECT * INTO compra FROM compras WHERE Id_COM = w_Id_COM;
+      IF(compra.fechaPedido<>w_fechaRecogida OR compra.fechaRecogida<>w_fechaRecogida OR compra.pagado<>w_pagado OR compra.Id_C<>w_Id_C OR compra.Id_T<>w_Id_T OR compra.Id_L<>w_Id_L)THEN
+        salida := true;
+      END IF;  
+      COMMIT WORK; 
+
+     /*Mostrar resultado de la prueba*/
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida,salida_Esperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salida_Esperada));
+        ROLLBACK;
+  END actualizar;
+  
+  PROCEDURE eliminar(nombre_prueba VARCHAR2, w_Id_COM IN compras.Id_COM%TYPE, salida_Esperada BOOLEAN) IS
+    salida BOOLEAN := true;
+    n_compras INTEGER;
+    BEGIN
+    
+      /*Eliminar compra*/
+      DELETE FROM compras WHERE Id_COM = w_Id_COM;
+      
+      /*Verificar que la compra no se encuentra en la BD*/
+      SELECT COUNT(*) INTO n_compras FROM compras WHERE Id_COM=w_Id_COM;
+      IF(n_compras<>0) THEN
+        salida := false;
+      END IF;
+      COMMIT WORK;
+      
+      /*Mostrar resultado de la prueba*/
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida,salida_Esperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salida_Esperada));
+        ROLLBACK;
+   END eliminar;     
+      
+END Pruebas_Compras;
+/
