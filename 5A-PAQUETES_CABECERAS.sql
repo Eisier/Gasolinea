@@ -35,3 +35,34 @@ CREATE OR REPLACE PACKAGE pruebas_trabajadores AS
     w_id_T          IN trabajadores.id_T%TYPE,
    salidaEsperada   BOOLEAN);
  END pruebas_trabajadores;
+/
+
+--LineaCompras
+CREATE OR REPLACE PACKAGE Pruebas_LineaCompras IS
+
+  PROCEDURE inicializar;
+  
+  PROCEDURE insertar(nombre_prueba VARCHAR2, w_cantidad IN lineaCompras.cantidad%TYPE, w_Id_I IN lineaCompras.Id_I%TYPE, salida_esperada BOOLEAN);
+  
+  PROCEDURE actualizar(nombre_prueba VARCHAR2, w_Id_L IN lineaCompras.Id_L%TYPE, w_cantidad IN lineaCompras.cantidad%TYPE, w_Id_I IN lineaCompras.Id_I%TYPE, salida_esperada BOOLEAN);
+  
+  PROCEDURE eliminar(nombre_prueba VARCHAR2, w_Id_L IN lineaCompras.Id_L%TYPE, salida_esperada BOOLEAN);
+  
+END Pruebas_LineaCompras;   
+/ 
+
+--Compras
+CREATE OR REPLACE PACKAGE Pruebas_Compras IS
+
+  PROCEDURE inicializar;
+  
+  PROCEDURE insertar(nombre_prueba VARCHAR2, w_fechaPedido IN COMPRAS.FECHAPEDIDO%TYPE, w_fechaRecogida IN compras.fechaRecogida%TYPE, w_Pagado IN compras.pagado%TYPE,
+  w_Id_C IN compras.Id_C%TYPE, w_Id_T IN compras.Id_T%TYPE, w_Id_L IN compras.Id_L%TYPE, salida_esperada BOOLEAN);
+  
+  PROCEDURE actualizar(nombre_prueba VARCHAR2, w_Id_COM IN Compras.Id_COM%TYPE, w_fechaPedido IN COMPRAS.FECHAPEDIDO%TYPE, w_fechaRecogida IN compras.fechaRecogida%TYPE,
+   w_Pagado IN compras.pagado%TYPE, w_Id_C IN compras.Id_C%TYPE, w_Id_T IN compras.Id_T%TYPE, w_Id_L IN compras.Id_L%TYPE, salida_esperada BOOLEAN);
+  
+  PROCEDURE eliminar(nombre_prueba VARCHAR2, w_Id_COM IN Compras.Id_COM%TYPE, salida_esperada BOOLEAN);
+  
+END Pruebas_Compras;  
+/
