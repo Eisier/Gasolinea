@@ -1,5 +1,6 @@
 DROP SEQUENCE sec_combustible;
 DROP SEQUENCE sec_almacen;
+DROP SEQUENCE sec_proveedor;
 DROP SEQUENCE sec_lineaCompra;
 DROP SEQUENCE sec_compra;
 
@@ -23,6 +24,16 @@ BEFORE INSERT ON Almacenes
 FOR EACH ROW
 BEGIN
   SELECT sec_almacen.currval INTO :NEW.Id_A FROM DUAL;
+END;
+/
+
+CREATE SEQUENCE sec_proveedor;
+
+CREATE OR REPLACE TRIGGER crea_id_proveedores
+BEFORE INSERT ON Proveedores
+FOR EACH ROW
+BEGIN
+  SELECT sec_proveedor.CURRVAL INTO :NEW.Id_PRO FROM DUAL;
 END;
 /
 
