@@ -1,7 +1,23 @@
 DROP SEQUENCE sec_combustible;
+DROP SEQUENCE sec_itemCompra;
 DROP SEQUENCE sec_almacen;
 DROP SEQUENCE sec_lineaCompra;
+DROP SEQUENCE sec_producto;
 DROP SEQUENCE sec_compra;
+
+CREATE SEQUENCE sec_itemCompra;
+
+CREATE OR REPLACE TRIGGER crea_id_itemCompra
+BEFORE INSERT ON itemCompras
+REFERENCING NEW AS NEW 
+FOR EACH ROW 
+DECLARE valorSecuencia NUMBER := 0;
+BEGIN
+  SELECT sec_itemCompra.currval INTO valorSecuencia FROM DUAL;
+  :NEW.Id_I := valorSecuencia;
+END;  
+/
+
 
 CREATE SEQUENCE sec_combustible;
 
@@ -13,6 +29,19 @@ DECLARE valorSecuencia NUMBER := 0;
 BEGIN
   SELECT sec_combustible.currval INTO valorSecuencia FROM DUAL;
   :NEW.Id_COMB := valorSecuencia;
+END;  
+/
+
+CREATE SEQUENCE sec_producto;
+
+CREATE OR REPLACE TRIGGER crea_id_producto
+BEFORE INSERT ON productos
+REFERENCING NEW AS NEW 
+FOR EACH ROW 
+DECLARE valorSecuencia NUMBER := 0;
+BEGIN
+  SELECT sec_producto.currval INTO valorSecuencia FROM DUAL;
+  :NEW.Id_P := valorSecuencia;
 END;  
 /
 
