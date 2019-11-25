@@ -1,5 +1,5 @@
 # Gasolinea
-Proyecto destinado a el desarrollo de una BBDD de una gasolinera en SQL
+Proyecto destinado al desarrollo de una BBDD de una gasolinera en SQL
 
 Version inicial del proyecto.
 
@@ -38,3 +38,8 @@ Jesus Serrano
 8ºProductos
 9ºLineaCompras
 10ºCompras
+
+Para la 2º fase del proyecto(pruebas) cada desarrollador debe realizar los correspondientes inserts para cada paquete y procedimiento que se le haya asignado en la 1º fase.
+
+**Se ha subido el punto 4 del proyecto, triggers, para asegurar el correcto funcionamiento de los inserts.
+
