@@ -3,6 +3,20 @@ DROP SEQUENCE sec_almacen;
 DROP SEQUENCE sec_proveedor;
 DROP SEQUENCE sec_lineaCompra;
 DROP SEQUENCE sec_compra;
+DROP SEQUENCE sec_trabajador;
+
+CREATE SEQUENCE sec_trabajador;
+
+CREATE OR REPLACE TRIGGER crea_id_trabajador
+BEFORE INSERT ON trabajadores
+REFERENCING NEW AS NEW 
+FOR EACH ROW 
+DECLARE valorSecuencia NUMBER := 0;
+BEGIN
+  SELECT sec_trabajador.currval INTO valorSecuencia FROM DUAL;
+  :NEW.Id_T := valorSecuencia;
+END;
+/
 
 CREATE SEQUENCE sec_combustible;
 
