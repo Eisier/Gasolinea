@@ -1,5 +1,64 @@
 --PROCEDIMIENTOS--
 
+--Clientes
+CREATE OR REPLACE PROCEDURE inicializar_clientes
+IS BEGIN
+  DELETE FROM clientes;
+END;
+/
+CREATE OR REPLACE PROCEDURE insertar_clientes
+(w_nombre IN clientes.nombre%TYPE,
+w_apellidos IN clientes.apellidos%TYPE,
+w_dni IN clientes.dni%TYPE,
+w_telefono IN clientes.telefono%TYPE,
+w_correo IN clientes.correo%TYPE,
+w_fechaNacimiento IN clientes.fechaNacimiento%TYPE,
+w_contraseña IN clientes.contraseña%TYPE,
+w_direccionImagen IN clientes.direccionImagen%TYPE) IS
+BEGIN
+  INSERT INTO clientes (Id_C,nombre,apellidos,dni,telefono,correo,fechaNacimiento,contraseña,direccionImagen)
+  VALUES (sec_cliente.nextval,w_nombre,w_apellidos,w_dni,w_telefono,w_correo,w_fechaNacimiento,w_contraseña,w_direccionImagen);
+  COMMIT WORK;
+END;
+/
+CREATE OR REPLACE PROCEDURE actualizar_clientes
+(w_Id_C IN clientes.Id_C%TYPE,
+w_nombre IN clientes.nombre%TYPE,
+w_apellidos IN clientes.apellidos%TYPE,
+w_dni IN clientes.dni%TYPE,
+w_telefono IN clientes.telefono%TYPE,
+w_correo IN clientes.correo%TYPE,
+w_fechaNacimiento IN clientes.fechaNacimiento%TYPE,
+w_contraseña IN clientes.contraseña%TYPE,
+w_direccionImagen IN clientes.direccionImagen%TYPE) IS
+BEGIN
+  UPDATE clientes SET nombre = w_nombre, apellidos = w_apellidos, dni = w_dni, telefono = w_telefono, correo = w_correo, fechaNacimiento = w_fechaNacimiento, contraseña = w_contraseña, direccionImagen = w_direccionImagen
+  WHERE Id_C = w_Id_C;
+END;
+/
+CREATE OR REPLACE PROCEDURE eliminar_clientes
+(w_Id_C IN clientes.Id_C%TYPE) IS
+BEGIN
+DELETE FROM CLIENTES WHERE Id_C = w_Id_C;
+END;
+/
+CREATE OR REPLACE PROCEDURE consultar_clientes is
+CURSOR C IS
+		SELECT * FROM clientes;
+	w_clientes clientes%ROWTYPE;
+BEGIN
+OPEN C;
+		FETCH C INTO w_clientes;
+		DBMS_OUTPUT.PUT_LINE(RPAD('Nombre:', 25) || RPAD('Apellidos:', 25) || RPAD('DNI:', 25) || RPAD('Telefono:', 25) || RPAD('Correo:', 25) || RPAD('Fecha Nacimiento:', 25) || RPAD('Contraseña:', 25) || RPAD('Direccion imagen:', 25));
+		DBMS_OUTPUT.PUT_LINE(LPAD('-', 200, '-'));
+		WHILE C%FOUND LOOP
+			DBMS_OUTPUT.PUT_LINE(RPAD(w_clientes.nombre, 25) || RPAD(w_clientes.apellidos, 25) || RPAD(w_clientes.dni, 25) || RPAD(w_clientes.telefono, 25) || RPAD(w_clientes.correo, 25) || RPAD(w_clientes.fechanacimiento, 25) || RPAD(w_clientes.contraseña, 25) || RPAD(w_clientes.direccionImagen, 25));
+		FETCH C INTO w_clientes;
+		END LOOP;
+		CLOSE C;
+	END consultar_clientes;
+/
+
 --Trabajadores
 CREATE OR REPLACE PROCEDURE inicializar_trabajadores
 IS BEGIN
@@ -70,6 +129,41 @@ OPEN C;
 		END LOOP;
 		CLOSE C;
 	END consultar_trabajadores;
+
+
+--Embarcaderos
+CREATE OR REPLACE PROCEDURE inicializar_embarcaderos
+IS BEGIN
+  DELETE FROM embarcaderos;
+END;
+/
+CREATE OR REPLACE PROCEDURE insertar_embarcaderos(
+
+  w_disponible            IN embarcaderos.disponible%TYPE) IS
+
+BEGIN
+  INSERT INTO embarcaderos (id_e, disponible)
+  VALUES (sec_embarcadero.NEXTVAL, w_disponible);
+  COMMIT WORK;
+END insertar_embarcaderos;
+/
+CREATE OR REPLACE PROCEDURE actualizar_embarcaderos(
+
+  w_id_e              IN embarcaderos.id_e%TYPE,
+  w_disponible        IN embarcaderos.disponible%TYPE) IS
+
+BEGIN
+  UPDATE embarcaderos SET disponible=w_disponible WHERE id_e=w_id_e;
+
+END actualizar_embarcaderos;
+/
+CREATE OR REPLACE PROCEDURE eliminar_embarcaderos(
+  w_id_e           IN embarcaderos.id_e%TYPE) IS
+
+BEGIN
+  DELETE FROM embarcaderos WHERE (id_e=w_id_e);
+END eliminar_embarcaderos;
+/
 
 --Proveedores
 CREATE OR REPLACE PROCEDURE insertar_proveedores
