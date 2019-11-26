@@ -142,6 +142,113 @@ END eliminar;
 END pruebas_trabajadores;
 /
 
+--Proveedores
+CREATE OR REPLACE
+PACKAGE BODY pruebas_proveedores AS
+  /*Inicializacion*/
+  PROCEDURE inicializar AS
+  BEGIN 
+    /*Borrar contenido de la tabla*/
+    DELETE FROM proveedores;
+  END inicializar;
+  /*Prueba para la insercion de proveedores*/
+  PROCEDURE insertar 
+   (nombre_prueba VARCHAR2,
+   w_nombre in proveedores.nombre%TYPE,
+    w_apellidos in proveedores.apellidos%TYPE,
+    w_dni in proveedores.dni%TYPE,
+    w_telefono in proveedores.telefono%TYPE,
+    w_correo in proveedores.correo%TYPE,
+   salidaEsperada BOOLEAN) AS
+  
+   salida BOOLEAN :=true;
+   proveedor proveedores%ROWTYPE;
+   w_id_pro INTEGER;
+  BEGIN
+  
+    /*Insertar proveedor*/
+    INSERT INTO proveedores VALUES (sec_proveedor.nextval, w_nombre, w_apellidos, w_dni, w_telefono, w_correo);
+    
+    /*Seleccionar almacen y comprobar que los datos se insertaron bien*/
+    w_id_pro := sec_proveedor.currval;
+    SELECT * INTO proveedor FROM proveedores WHERE id_pro = w_id_pro;
+    IF (proveedor.nombre<>w_nombre
+      OR proveedor.apellidos<>w_apellidos
+      OR proveedor.dni<> w_dni
+      OR proveedor.telefono<>w_telefono
+      OR proveedor.correo<>w_correo)THEN
+      salida:=false;
+    END IF;
+    COMMIT WORK;
+    
+    /*Mostrar resultado de la prueba*/
+    DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salidaEsperada));
+      ROLLBACK;
+  END insertar;
+  /*Prueba para la actualizacion de proveedores*/
+  PROCEDURE actualizar (nombre_prueba VARCHAR2,
+    w_id_pro in proveedores.id_pro%TYPE,
+    w_nombre in proveedores.nombre%TYPE,
+    w_apellidos in proveedores.apellidos%TYPE,
+    w_dni in proveedores.dni%TYPE,
+    w_telefono in proveedores.telefono%TYPE,
+    w_correo in proveedores.correo%TYPE,
+    salidaEsperada BOOLEAN) AS
+    proveedor proveedores%ROWTYPE;
+    salida BOOLEAN := true;
+  BEGIN
+    /*Actualizar proveedor*/
+    UPDATE proveedores SET nombre = w_nombre, apellidos = w_apellidos, dni = w_dni, telefono = w_telefono, correo = w_correo
+      WHERE id_pro = w_id_pro;
+    /*Seleccionar proveedor y comprobar que los campos se actualizaron correctamente*/
+    SELECT * INTO proveedor FROM proveedores WHERE id_pro = w_id_pro;
+    IF (proveedor.nombre<>w_nombre
+      OR proveedor.apellidos<>w_apellidos
+      OR proveedor.dni<> w_dni
+      OR proveedor.telefono<>w_telefono
+      OR proveedor.correo<>w_correo)
+        THEN salida:=false;
+    END IF;
+    COMMIT WORK;
+     /*Mostrar resultado de la prueba*/
+   DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida,salidaEsperada));
+    EXCEPTION
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salidaEsperada));
+      ROLLBACK;
+  END actualizar;
+  /*Prueba para la eliminacion de proveedores*/
+  PROCEDURE eliminar (nombre_prueba VARCHAR2,
+    w_id_pro in proveedores.id_pro%TYPE,
+    salidaEsperada BOOLEAN) AS
+    
+    salida BOOLEAN := true;
+    n_proveedores INTEGER;
+  BEGIN
+    /*Eliminar proveedor*/
+    DELETE FROM proveedores WHERE id_pro = w_id_pro;
+    /*Verificar que el proveedor no se encuentre en la bd*/
+    SELECT COUNT (*) INTO n_proveedores FROM proveedores WHERE id_pro = w_id_pro;
+    IF (n_proveedores<> 0) 
+      THEN salida :=false;
+    END IF;
+    COMMIT WORK;
+    
+    /*Mostrar resultado de la prueba*/
+    DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida, salidaEsperada));
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false, salidaEsperada));
+          ROLLBACK;
+  END eliminar;
+
+END;
+/
+
 --LineaCompras
 CREATE OR REPLACE PACKAGE BODY Pruebas_lineaCompras IS
 
