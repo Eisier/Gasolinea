@@ -310,3 +310,181 @@ CREATE OR REPLACE PACKAGE BODY Pruebas_Compras IS
       
 END Pruebas_Compras;
 /
+
+--Combustible
+CREATE OR REPLACE PACKAGE BODY Pruebas_COMBUSTIBLES IS
+
+  PROCEDURE inicializar
+  IS BEGIN
+    DELETE FROM combustibles;
+  END inicializar;
+  
+  PROCEDURE insertar (nombre_prueba VARCHAR2, w_TipoCombustible IN COMBUSTIBLES.TIPOCOMBUSTIBLE%TYPE, w_ID_I IN COMBUSTIBLES.ID_I%TYPE, salida_Esperada BOOLEAN) IS
+    salida BOOLEAN := true;
+    combustible combustibles%ROWTYPE;
+    w_Id_COMB NUMBER;
+    BEGIN
+      /*Insertar COMBUSTIBLE*/ 
+      INSERT INTO Combustibles
+      VALUES (sec_combustible.nextval,w_tipoCombustible,w_ID_I);
+      /*Seleccionar combustible y comprobar que los datos se insertaron correctamente*/
+      w_Id_COMB := sec_combustible.currval;
+      SELECT * INTO combustible FROM combustibles WHERE Id_COMB = w_Id_COMB;
+      IF(combustible.tipoCombustible<>w_tipoCombustible OR combustible.ID_I<>w_ID_I) THEN
+        salida := false;
+      END IF;  
+    COMMIT WORK;
+    
+    /*Mostrar resultado de la prueba*/
+    DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida,salida_Esperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salida_Esperada));
+      ROLLBACK;
+  END insertar;
+
+  PROCEDURE actualizar(nombre_prueba  VARCHAR2, w_ID_COMB IN COMBUSTIBLES.ID_COMB%TYPE,w_TipoCombustible IN COMBUSTIBLES.TIPOCOMBUSTIBLE%TYPE, w_ID_I IN COMBUSTIBLES.ID_I%TYPE, salida_Esperada BOOLEAN) IS
+    salida BOOLEAN := true;
+    combustible combustibles%ROWTYPE;
+    BEGIN
+      /*Actualizar combustible*/
+      UPDATE combustibles SET tipoCombustible=w_tipoCombustible, ID_I=w_ID_I WHERE Id_COMB = w_Id_COMB;
+      /*Seleccionar combustible y comprobar que los campos se actualizan correctamente*/
+      SELECT * INTO combustible FROM combustibles WHERE Id_COMB = w_Id_COMB;
+      IF (combustible.tipoCombustible<>w_tipoCombustible OR combustible.ID_I<>w_ID_I) THEN
+        salida := false;
+      END IF;
+      COMMIT WORK;
+      
+      /*Mostrar resultado de la prueba*/
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida,salida_Esperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salida_Esperada));
+   END actualizar;
+   
+   PROCEDURE eliminar(nombre_prueba VARCHAR2, w_ID_COMB IN COMBUSTIBLES.ID_COMB%TYPE, salida_Esperada BOOLEAN) IS
+    salida BOOLEAN := true;
+    n_combustibles INTEGER;
+    BEGIN
+      /*Eliminar clientes*/
+      DELETE FROM combustibles WHERE Id_COMB=w_Id_COMB;
+      /*Verificar que el combustibles no se encuentra en la BD*/
+      SELECT COUNT(*) INTO n_combustibles FROM combustibles WHERE Id_COMB=w_Id_COMB;
+      IF(n_combustibles<>0) THEN
+        salida := false;
+      END IF;
+      COMMIT WORK;
+      
+      /*Mostrar resultado de la prueba*/
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida,salida_Esperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salida_Esperada));
+        ROLLBACK;
+   END eliminar;     
+END Pruebas_COMBUSTIBLES;  
+/
+
+--Almacenes
+CREATE OR REPLACE
+PACKAGE BODY pruebas_almacenes AS
+  /*Inicializacion*/
+  PROCEDURE inicializar AS
+  BEGIN 
+    /*Borrar contenido de la tabla*/
+    DELETE FROM almacenes;
+  END inicializar;
+  /*Prueba para la insercion de almacenes*/
+  PROCEDURE insertar 
+   (nombre_prueba VARCHAR2,
+   w_direccion in almacenes.direccion%TYPE,
+   w_ciudad in almacenes.ciudad%TYPE,
+   w_provincia in almacenes.provincia%TYPE,
+   salidaEsperada BOOLEAN) AS
+  
+   salida BOOLEAN :=true;
+   almacen almacenes%ROWTYPE;
+   w_id_a INTEGER;
+  BEGIN
+  
+    /*Insertar almacen*/
+    INSERT INTO almacenes VALUES (sec_almacen.NEXTVAL, w_direccion, w_ciudad, w_provincia);
+    
+    /*Seleccionar almacen y comprobar que los datos se insertaron bien*/
+    w_id_a := sec_almacen.currval;
+    SELECT * INTO almacen FROM almacenes WHERE id_a = w_id_a;
+    IF (almacen.direccion<>w_direccion
+      OR almacen.ciudad<>w_ciudad
+      OR almacen.provincia<> w_provincia)THEN
+      salida:=false;
+    END IF;
+    COMMIT WORK;
+    
+    /*Mostrar resultado de la prueba*/
+    DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salidaEsperada));
+      ROLLBACK;
+  END insertar;
+  /*Prueba para la actualizacion de almacenes*/
+  PROCEDURE actualizar (nombre_prueba VARCHAR2,
+    w_id_a in almacenes.id_a%TYPE,
+    w_direccion in almacenes.direccion%TYPE,
+    w_ciudad in almacenes.ciudad%TYPE,
+    w_provincia in almacenes.provincia%TYPE,
+    salidaEsperada BOOLEAN) AS
+    
+    almacen almacenes%ROWTYPE;
+    salida BOOLEAN :=true;
+  BEGIN
+    /*Actualizar almacen*/
+    UPDATE almacenes SET direccion = w_direccion, ciudad = w_ciudad, provincia = w_provincia
+      WHERE id_a = w_id_a;
+    /*Seleccionar almacen y comprobar que los campos se actualizaron correctamente*/
+    SELECT * INTO almacen FROM almacenes WHERE id_a = w_id_a;
+    IF (almacen.direccion<>w_direccion OR almacen.ciudad<>w_ciudad OR almacen.provincia<>w_provincia)
+      THEN salida := false;
+    END IF;
+    COMMIT WORK;
+      /*Mostrar resultado de la prueba*/
+    DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false,salidaEsperada));
+      ROLLBACK;
+  END actualizar;
+  /*Prueba para la eliminacion de almacenes*/
+  PROCEDURE eliminar (nombre_prueba VARCHAR2,
+    w_id_a in almacenes.id_a%TYPE,
+    salidaEsperada BOOLEAN) AS
+    
+    salida BOOLEAN := true;
+    n_almacenes INTEGER;
+  BEGIN
+    /*Eliminar almacen*/
+    DELETE FROM almacenes WHERE id_a = w_id_a;
+    /*Verificar que el almacen no se encuentre en la bd*/
+    SELECT COUNT (*) INTO n_almacenes FROM almacenes WHERE id_a = w_id_a;
+    IF (n_almacenes<> 0) 
+      THEN salida :=true ; 
+    END IF;
+    COMMIT WORK;
+    
+    /*Mostrar resultado de la prueba*/
+    DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(salida, salidaEsperada));
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ':' || ASSERT_EQUALS(false, salidaEsperada));
+          ROLLBACK;
+  END eliminar;
+
+END;
+/
+
