@@ -7,23 +7,23 @@ Reparticion para la creacion de las tablas con sus respectivos triggers secuenci
 
 *Se ha subido a la rama master una imagen que representa el modelo conceptual de la BBDD para que los desarrolladores se guien
 
-Albaro Chura
+Albaro Chura(albarocp)
  -Cliente
  -Embarcadero
 
-Asier Herreria
+Asier Herreria(Eisier)
  -Compra
  -LineaCompra
 
-Julian Granados
+Julian Granados(JuleeSin)
  -ItemCompra
  -Producto
 
-Adrian Romero
+Adrian Romero(adrromsor)
  -Combustible
  -Almacen
 
-Jesus Serrano
+Jesus Serrano(Brrilete)
  -Trabajador
  -Proveedor
 
@@ -43,3 +43,14 @@ Para la 2º fase del proyecto(pruebas) cada desarrollador debe realizar los corr
 
 **Se ha subido el punto 4 del proyecto, triggers, para asegurar el correcto funcionamiento de los inserts.
 
+**************************************************
+****************Licencia: GPL 3.0*****************
+**************************************************
+-------------------------------------Utilización--------------------------------
+Para el uso del proyecto cargar los archivos por el orden establecido en la BBDD
+--------------------------------------------------------------------------------
+
+-------------------------------Información adicional----------------------------
+----EL nombre del proyecto viene de la fusión entre gasolinera+linea, por la ---
+-------ubicación de la misma en dicho pueblo(Linea de la Concepcion,Cadiz.------
+--------------------------------------------------------------------------------
