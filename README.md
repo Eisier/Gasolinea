@@ -46,11 +46,14 @@ Para la 2º fase del proyecto(pruebas) cada desarrollador debe realizar los corr
 **************************************************
 ****************Licencia: GPL 3.0*****************
 **************************************************
--------------------------------------Utilización--------------------------------
-Para el uso del proyecto cargar los archivos por el orden establecido en la BBDD
---------------------------------------------------------------------------------
 
--------------------------------Información adicional----------------------------
-----EL nombre del proyecto viene de la fusión entre gasolinera+linea, por la ---
--------ubicación de la misma en dicho pueblo(Linea de la Concepcion,Cadiz.------
---------------------------------------------------------------------------------
+**********************************************************************************
+**********************************Utilización*************************************
+*Para el uso del proyecto cargar los archivos por el orden establecido en la BBDD*
+**********************************************************************************
+
+********************************************************************************
+********************************Información adicional***************************
+****EL nombre del proyecto viene de la fusión entre gasolinera+linea, por la****
+*******ubicación de la misma en dicho pueblo(Linea de la Concepcion,Cadiz)******
+********************************************************************************
