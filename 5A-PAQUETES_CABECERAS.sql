@@ -1,10 +1,26 @@
 -- PAQUETES - CABECERAS --
 
+--Clientes
+CREATE OR REPLACE PACKAGE Pruebas_Clientes IS
+
+  PROCEDURE inicializar;
+
+  PROCEDURE insertar(nombre_prueba VARCHAR2, w_nombre IN clientes.nombre%TYPE, w_apellidos IN clientes.apellidos%TYPE, w_dni IN clientes.dni%TYPE, w_telefono IN clientes.telefono%TYPE,
+  w_correo IN clientes.correo%TYPE, w_fechaNacimiento IN clientes.fechaNacimiento%TYPE, w_contraseña IN clientes.contraseña%TYPE, w_direccionImagen IN clientes.direccionImagen%TYPE, salida_esperada BOOLEAN);
+
+  PROCEDURE actualizar(nombre_prueba VARCHAR2, w_Id_C IN clientes.Id_C%TYPE, w_nombre IN clientes.nombre%TYPE, w_apellidos IN clientes.apellidos%TYPE, w_dni IN clientes.dni%TYPE, w_telefono IN clientes.telefono%TYPE,
+  w_correo IN clientes.correo%TYPE, w_fechaNacimiento IN clientes.fechaNacimiento%TYPE, w_contraseña IN clientes.contraseña%TYPE, w_direccionImagen IN clientes.direccionImagen%TYPE, salida_esperada BOOLEAN);
+
+  PROCEDURE eliminar(nombre_prueba VARCHAR2, w_Id_C IN clientes.Id_C%TYPE, salida_esperada BOOLEAN);
+
+END Pruebas_Clientes;
+/
+
 --Trabajadores
 CREATE OR REPLACE PACKAGE pruebas_trabajadores AS
-  
+
   PROCEDURE inicializar;
-  
+
   PROCEDURE insertar
   (nombre_prueba       VARCHAR2,
    w_nombre            IN trabajadores.nombre%TYPE,
@@ -35,6 +51,30 @@ CREATE OR REPLACE PACKAGE pruebas_trabajadores AS
     w_id_T          IN trabajadores.id_T%TYPE,
    salidaEsperada   BOOLEAN);
  END pruebas_trabajadores;
+/
+
+--Embarcaderos
+CREATE OR REPLACE PACKAGE pruebas_embarcaderos AS
+  
+  PROCEDURE inicializar;
+  
+  PROCEDURE insertar
+  (nombre_prueba       VARCHAR2,
+   w_disponible        IN embarcaderos.disponible%TYPE,
+   salidaEsperada      BOOLEAN);
+
+   PROCEDURE actualizar
+   (nombre_prueba       VARCHAR2,
+   w_id_E               IN embarcaderos.id_E%TYPE,
+   w_disponible         IN embarcaderos.disponible%TYPE,
+   salidaEsperada       BOOLEAN);
+
+   PROCEDURE eliminar
+   (nombre_prueba      VARCHAR2,
+    w_id_E             IN embarcaderos.id_E%TYPE,
+   salidaEsperada      BOOLEAN);
+
+   END pruebas_embarcaderos;
 /
 
 --Proveedores
