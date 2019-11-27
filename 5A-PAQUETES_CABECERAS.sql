@@ -37,6 +37,53 @@ CREATE OR REPLACE PACKAGE pruebas_trabajadores AS
  END pruebas_trabajadores;
 /
 
+--Combustibles
+/*create or replace PACKAGE pruebas_combustibles AS
+PROCEDURE eliminar (nombre_prueba VARCHAR2,w_ID_COMB IN COMBUSTIBLES.ID_COMB%TYPE,salidaEsperada BOOLEAN);
+PROCEDURE inicializar;
+PROCEDURE actualizar(nombre_prueba VARCHAR2,w_ID_COMB IN COMBUSTIBLES.ID_COMB%TYPE,
+w_TipoCombustible IN COMBUSTIBLES.TIPOCOMBUSTIBLE%TYPE,
+w_ID_I IN COMBUSTIBLES.ID_I%TYPE,salidaEsperada BOOLEAN);
+PROCEDURE insertar(nombre_prueba VARCHAR2,
+w_TipoCombustible IN COMBUSTIBLES.TIPOCOMBUSTIBLE%TYPE,
+w_ID_I IN COMBUSTIBLES.ID_I%TYPE,salidaEsperada BOOLEAN);
+END pruebas_combustibles;
+/*/
+
+CREATE OR REPLACE PACKAGE PRUEBAS_COMBUSTIBLES IS
+
+  PROCEDURE inicializar;
+  PROCEDURE insertar(nombre_prueba VARCHAR2, w_TipoCombustible IN COMBUSTIBLES.TIPOCOMBUSTIBLE%TYPE, w_ID_I IN COMBUSTIBLES.ID_I%TYPE, salida_Esperada BOOLEAN);
+  PROCEDURE actualizar(nombre_prueba  VARCHAR2, w_ID_COMB IN COMBUSTIBLES.ID_COMB%TYPE,w_TipoCombustible IN COMBUSTIBLES.TIPOCOMBUSTIBLE%TYPE, w_ID_I IN COMBUSTIBLES.ID_I%TYPE, salida_Esperada BOOLEAN);
+  PROCEDURE eliminar(nombre_prueba VARCHAR2, w_ID_COMB IN COMBUSTIBLES.ID_COMB%TYPE, salida_Esperada BOOLEAN);
+  
+END PRUEBAS_COMBUSTIBLES;
+/
+
+--Almacenes
+CREATE OR REPLACE 
+PACKAGE pruebas_almacenes AS
+  PROCEDURE inicializar;
+  PROCEDURE insertar
+    (nombre_prueba VARCHAR2,
+    w_direccion in almacenes.direccion%TYPE,
+    w_ciudad in almacenes.ciudad%TYPE,
+    w_provincia in almacenes.provincia%TYPE,
+    salidaEsperada BOOLEAN);
+  PROCEDURE actualizar
+    (nombre_prueba VARCHAR2,
+    w_id_a in almacenes.id_a%TYPE,
+    w_direccion in almacenes.direccion%TYPE,
+    w_ciudad in almacenes.ciudad%TYPE,
+    w_provincia in almacenes.provincia%TYPE,
+    salidaEsperada BOOLEAN);
+  PROCEDURE eliminar
+  (nombre_prueba VARCHAR2,
+  w_id_a in almacenes.id_a%TYPE,
+  salidaEsperada BOOLEAN);
+END;
+/
+
 --Proveedores
 CREATE OR REPLACE 
 PACKAGE pruebas_proveedores AS
