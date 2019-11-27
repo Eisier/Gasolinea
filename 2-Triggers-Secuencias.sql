@@ -5,7 +5,22 @@ DROP SEQUENCE sec_almacen;
 DROP SEQUENCE sec_proveedor;
 DROP SEQUENCE sec_lineaCompra;
 DROP SEQUENCE sec_compra;
+DROP SEQUENCE sec_embarcadero;
 DROP SEQUENCE sec_trabajador;
+DROP SEQUENCE sec_cliente;
+
+CREATE SEQUENCE sec_cliente;
+
+CREATE OR REPLACE TRIGGER crea_id_cliente
+BEFORE INSERT ON clientes
+REFERENCING NEW AS NEW 
+FOR EACH ROW 
+DECLARE valorSecuencia NUMBER := 0;
+BEGIN
+  SELECT sec_cliente.currval INTO valorSecuencia FROM DUAL;
+  :NEW.Id_C := valorSecuencia;
+END;
+/
 
 CREATE SEQUENCE sec_trabajador;
 
@@ -20,7 +35,18 @@ BEGIN
 END;
 /
 
+CREATE SEQUENCE sec_embarcadero;
 
+CREATE OR REPLACE TRIGGER crea_id_embarcadero
+BEFORE INSERT ON embarcaderos
+REFERENCING NEW AS NEW 
+FOR EACH ROW 
+DECLARE valorSecuencia NUMBER := 0;
+BEGIN
+  SELECT sec_embarcadero.currval INTO valorSecuencia FROM DUAL;
+  :NEW.Id_E := valorSecuencia;
+END;
+/
 
 CREATE SEQUENCE sec_itemCompra;
 
@@ -34,8 +60,6 @@ BEGIN
   :NEW.Id_I := valorSecuencia;
 END;  
 /
-
-
 
 CREATE SEQUENCE sec_combustible;
 
