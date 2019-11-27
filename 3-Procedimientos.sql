@@ -95,6 +95,61 @@ INSERT INTO ITEMCOMPRAS(Id_I,STOCK,PRECIO) VALUES (sec_itemCompra.nextval,w_stoc
 END;
 /
 
+--Combustibles
+CREATE or replace PROCEDURE eliminar_combustibles (w_Id_COMB IN COMBUSTIBLES.ID_COMB%TYPE) IS
+BEGIN
+DELETE FROM COMBUSTIBLES WHERE ID_COMB = w_ID_COMB;
+END;
+/
+CREATE or replace PROCEDURE inicializar_combustibles IS
+BEGIN
+DELETE FROM COMBUSTIBLES;
+END;
+/
+CREATE or replace PROCEDURE actualizar_combustibles(w_ID_COMB IN COMBUSTIBLES.ID_COMB%TYPE,w_TipoCombustible IN COMBUSTIBLES.TIPOCOMBUSTIBLE%TYPE,w_ID_I IN COMBUSTIBLES.ID_I%TYPE) IS
+BEGIN
+UPDATE COMBUSTIBLES SET TIPOCOMBUSTIBLE = w_TipoCombustible,ID_I = w_ID_I WHERE ID_COMB=w_ID_COMB;
+END;
+/
+CREATE OR replace PROCEDURE insertar_combustibles(w_TipoCombustible IN COMBUSTIBLES.TIPOCOMBUSTIBLE%TYPE,w_ID_I IN COMBUSTIBLES.ID_I%TYPE) IS
+BEGIN
+INSERT INTO COMBUSTIBLES(ID_COMB,TIPOCOMBUSTIBLE,ID_I)VALUES (sec_combustible.nextval,w_TipoCombustible,w_ID_I);
+END;
+/
+
+--Almacenes
+CREATE OR REPLACE PROCEDURE insertar_almacenes
+(w_direccion IN almacenes.direccion%TYPE,
+w_ciudad IN almacenes.ciudad%TYPE,
+w_provincia IN almacenes.provincia%TYPE) IS
+BEGIN
+INSERT INTO Almacenes(id_a, direccion, ciudad, provincia)
+VALUES (sec_almacen.NEXTVAL, w_direccion, w_ciudad, w_provincia);
+END;
+/
+CREATE OR REPLACE PROCEDURE eliminar_almacenes
+(w_id_a IN almacenes.id_a%TYPE) IS
+BEGIN 
+DELETE FROM almacenes WHERE id_a = w_id_a;
+END;
+/
+CREATE OR REPLACE PROCEDURE modificar_almacenes
+(w_id_a IN almacenes.id_a%TYPE,
+w_direccion IN almacenes.direccion%TYPE,
+w_ciudad IN almacenes.ciudad%TYPE,
+w_provincia IN almacenes.provincia%TYPE) IS
+BEGIN
+UPDATE Almacenes SET  direccion = w_direccion, ciudad = w_ciudad, provincia = w_provincia
+WHERE id_a = w_id_a;
+END;
+/
+CREATE OR REPLACE PROCEDURE inicializar_almacenes
+IS
+BEGIN
+  DELETE FROM Almacenes;
+END;
+/
+
 --Proveedores
 CREATE OR REPLACE PROCEDURE insertar_proveedores
 (w_nombre in proveedores.nombre%TYPE,
